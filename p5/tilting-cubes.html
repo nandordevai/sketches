@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+    <style>
+        @media screen and (orientation: landscape) {
+            body {
+                width: 100vh;
+                height: 100vw;
+            }
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 100vh;
+            transform-origin: 0 0;
+        }
+
+        body.rotation--landscape-left {
+            transform: rotate(90deg) translateY(-177.9%);
+        }
+
+        body.rotation--landscape-right {
+            transform: rotate(-90deg) translateX(-56.25%);
+        }
+    </style>
+    <style media="screen">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="p5.min.js"></script>
+    <script src="tilting-cubes.js"></script>
+</body>
+
+</html>

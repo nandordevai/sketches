@@ -1,0 +1,40 @@
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    margin: 3rem;
+}
+
+main {
+    width: 90ex;
+}
+
+main div {
+    padding: 1rem;
+}
+
+.tags a::before {
+    content: '#';
+}
+
+.tags a {
+    /* disable for now */
+    color: hsla(0, 0%, 0%, 1) !important;
+    text-decoration: none;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.thumbnail {
+    width: 300px;
+}
+
+.item {
+    border-bottom: 1px solid hsla(0, 0%, 70%, 1);
+}
+
+footer {
+    margin-bottom: 3rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+}

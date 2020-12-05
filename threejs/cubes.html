@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLA 3D</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #parameters {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 250px;
+            height: 200px;
+            background: hsla(0, 0%, 20%, 0.5);
+            padding: 10px;
+        }
+
+        input {
+            left: 10px;
+            position: relative;
+            vertical-align: middle;
+            width: 150px;
+        }
+
+        label {
+            color: hsla(0, 0%, 90%, 1);
+            display: inline-block;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            line-height: 20px;
+            text-align: right;
+            width: 80px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script src="three.min.js"></script>
+</head>
+
+<body>
+    <form id="parameters" class="hidden">
+        <label>Size</label><input type="range" name="" min="1" max="500" id="cubeSize"><br>
+        <label>X speed</label><input type="range" name="" min="1" max="500" id="xSpeed"><br>
+        <label>Y speed</label><input type="range" name="" min="1" max="500" id="ySpeed">
+    </form>
+    <script src="cubes.js"></script>
+</body>
+
+</html>
