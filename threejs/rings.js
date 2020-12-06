@@ -1,33 +1,49 @@
+function map(value, minFrom, maxFrom, minTo, maxTo) {
+    if (value > maxFrom) return maxFrom;
+    if (value < minFrom) return minFrom;
+    return (maxTo - minTo) * (value / (maxFrom - minFrom)) + minTo;
+}
+
+function random(min, max) {
+    return map(Math.random(), 0, 1, min, max);
+}
+
 class Ring {
-    constructor() {
+    constructor(zPos) {
         this.hue = Math.random();
         this.node = new THREE.Object3D();
-        this.rotationSpeed = 0.03;
-        this.speed = 0.5;
+        this.node.rotation.z = Math.random();
+        this.rotationSpeed = random(-0.03, 0.03);
+        this.spin = random(-0.1, 0.1);
+        this.speed = 0.2;
+        this.r = map(Math.random(), 0, 1, 1, 4);
+        this.itemWidth = random(0.1, 0.4) * this.r * 2;
+        this.material = new THREE.MeshLambertMaterial();
+        this.material.color.setHSL(this.hue, 1, 0);
         for (let i = 0; i < 12; i++) {
             this.node.add(this.makeItem());
         }
+        this.node.position.z = zPos;
         this.node.children.forEach((_, i) => {
-            _.position.x = Math.sin(2 * Math.PI * i / 12);
-            _.position.y = Math.cos(2 * Math.PI * i / 12);
+            _.position.x = Math.sin(2 * Math.PI * i / 12) * this.r;
+            _.position.y = Math.cos(2 * Math.PI * i / 12) * this.r;
             _.rotation.z = -(2 * Math.PI / 12 * i);
         });
     }
 
     makeItem() {
-        const geometry = new THREE.BoxGeometry(0.3, 0.01, 2);
-        const material = new THREE.MeshLambertMaterial();
-        material.color.setHSL(this.hue, 0.8, 0.8);
-        const item = new THREE.Mesh(geometry, material);
+        const geometry = new THREE.BoxGeometry(this.itemWidth, 0.1, 2);
+        const item = new THREE.Mesh(geometry, this.material);
         return item;
     }
 
     update() {
+        this.material.color.setHSL(this.hue, 1, map(this.node.position.z, -25, 6, 0.2, 0.8));
         this.node.rotation.z += this.rotationSpeed;
         this.node.position.z += this.speed;
-        if (this.node.position.z > 6) {
-            this.node.position.z = -30;
-        }
+        this.node.children.forEach((_) => {
+            _.rotation.z += this.spin;
+        });
     }
 }
 
@@ -46,11 +62,24 @@ light.color.setHSL(0, 0, 0.5);
 scene.add(light);
 scene.add(aLight);
 
-const rings = Array.from(Array(1), () => (new Ring()));
+const numRings = 12;
+const minZ = 6;
+const startZ = -2;
+const rings = Array.from(Array(numRings), (_, i) => (new Ring((i + 1) * startZ)));
 rings.forEach(_ => { scene.add(_.node); });
 
-function render() {
-    rings[0].update();
+function render(time) {
+    for (let i = rings.length - 1; i >= 0; i--) {
+        rings[i].update(time);
+        if (rings[i].node.position.z > minZ) {
+            rings.splice(i, 1);
+        }
+    }
+    for (let i = 0; i <= numRings - rings.length; i++) {
+        const ring = new Ring((numRings + 1) * startZ);
+        rings.push(ring);
+        scene.add(ring.node);
+    };
     requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
