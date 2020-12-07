@@ -2,14 +2,14 @@ const tree = [];
 const n = 2000;
 let walkers;
 const r = 8;
-const size = 400;
 let center = null;
 const speed = 1;
 let light = null;
+const showWalkers = false;
 
 function setup() {
     colorMode(HSL);
-    createCanvas(size, size);
+    createCanvas(600, 400);
     center = createVector(width / 2, height);
     walkers = Array.from(Array(n), _ => new Walker());
     tree.push(new Walker(width / 2, height, true));
@@ -24,9 +24,11 @@ function draw() {
     for (let i = 0; i < tree.length; i++) {
         tree[i].show();
     }
-    // for (let i = 0; i < walkers.length; i++) {
-    //     walkers[i].show();
-    // }
+    if (showWalkers) {
+        for (let i = 0; i < walkers.length; i++) {
+            walkers[i].show();
+        }
+    }
     light.update();
     light.show();
     if (walkers.length === 0) {
@@ -106,7 +108,11 @@ class Light {
 
     show() {
         noStroke();
-        fill(0, 0, 100);
-        ellipse(this.pos.x, this.pos.y, 100);
+        const c = color(0, 0, 100);
+        for (let i = 100; i > 0; i--) {
+            c.setAlpha(map(i ** 2 / 100, 100, 0, 0, 0.5));
+            fill(c);
+            ellipse(this.pos.x, this.pos.y, i);
+        }
     }
 }
