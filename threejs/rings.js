@@ -1,13 +1,3 @@
-function map(value, minFrom, maxFrom, minTo, maxTo) {
-    if (value > maxFrom) return maxFrom;
-    if (value < minFrom) return minFrom;
-    return (maxTo - minTo) * (value / (maxFrom - minFrom)) + minTo;
-}
-
-function random(min, max) {
-    return map(Math.random(), 0, 1, min, max);
-}
-
 class Ring {
     constructor(zPos) {
         this.hue = Math.random();
@@ -63,7 +53,7 @@ scene.add(light);
 scene.add(aLight);
 
 const numRings = 12;
-const minZ = 6;
+const maxZ = 6;
 const startZ = -2;
 const rings = Array.from(Array(numRings), (_, i) => (new Ring((i + 1) * startZ)));
 rings.forEach(_ => { scene.add(_.node); });
@@ -71,7 +61,7 @@ rings.forEach(_ => { scene.add(_.node); });
 function render(time) {
     for (let i = rings.length - 1; i >= 0; i--) {
         rings[i].update(time);
-        if (rings[i].node.position.z > minZ) {
+        if (rings[i].node.position.z > maxZ) {
             rings.splice(i, 1);
         }
     }
