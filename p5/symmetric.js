@@ -24,6 +24,7 @@ const symmetric = new p5((p5) => {
         yFromLeft = p5.height / 2;
         xFromRight = p5.width / 2;
         yFromRight = p5.height / 2;
+
     };
 
     p5.draw = () => {
@@ -50,4 +51,8 @@ const symmetric = new p5((p5) => {
         }
         p5.noLoop();
     };
+
+    document.querySelector('#download').addEventListener('click', () => {
+        p5.saveCanvas('symmetry', 'png');
+    });
 });

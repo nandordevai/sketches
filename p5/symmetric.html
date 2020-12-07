@@ -7,11 +7,31 @@
     <title>Symmetric</title>
     <script src="p5.min.js"></script>
     <script src="/lib.js"></script>
-    <script src="symmetric.js"></script>
+    <style>
+        body {
+            align-items: center;
+            background-color: black;
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            margin: 0;
+        }
+    
+        #download {
+            background-color: black;
+            color: hsla(0, 0%, 80%, 1);
+            border: 1px solid hsla(0, 0%, 80%, 1);
+            padding: .5rem 1rem;
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+        }
+    </style>
 </head>
 
 <body>
-
+    <button id="download">Save image</button>
+    <script src="symmetric.js"></script>
 </body>
 
 </html>
