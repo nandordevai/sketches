@@ -18,8 +18,9 @@ const symmetric = new p5((p5) => {
         p5.strokeWeight(3);
         p5.strokeCap(p5.ROUND);
         p5.background(0, 0, 0);
-        hueOffset = p5.random(360);
+        hueOffset = Math.round(p5.random(360));
         seeds = Array.from(Array(3), () => Math.floor(p5.random(1000)));
+        // seeds = [281, 280, 548];
         xFromLeft = p5.width / 2;
         yFromLeft = p5.height / 2;
         xFromRight = p5.width / 2;
@@ -50,6 +51,11 @@ const symmetric = new p5((p5) => {
             }
         }
         p5.noLoop();
+        p5.noStroke();
+        p5.fill(0, 0, 30);
+        p5.textAlign(p5.RIGHT, p5.BOTTOM);
+        p5.text([...seeds, hueOffset].join(', '), p5.width, p5.height);
+
     };
 
     document.querySelector('#download').addEventListener('click', () => {
