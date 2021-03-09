@@ -16,15 +16,10 @@ ambientLight.color.setHSL(0, 0, 0.4);
 const directionalLight = new THREE.DirectionalLight();
 directionalLight.color.setHSL(0, 0, .8);
 directionalLight.position.set(0, 3, 8);
-const spotLight = new THREE.SpotLight();
-spotLight.color.setHSL(0, 0, .8);
-const spotLightHelper = new THREE.SpotLightHelper(spotLight);
 
 const scene = new THREE.Scene();
-// scene.add(directionalLight);
-// scene.add(ambientLight);
-// scene.add(spotLight);
-// scene.add(spotLightHelper);
+scene.add(directionalLight);
+scene.add(ambientLight);
 
 const container = new THREE.Object3D();
 scene.add(container);
@@ -49,12 +44,8 @@ class Node {
     }
 
     drawConnections() {
-        // const m = new THREE.LineDashedMaterial({
-        //     dashSize: .05,
-        //     gapSize: .1,
-        // });
-        const m = new THREE.LineBasicMaterial();
-        m.color.setHSL(0, 0, 1);
+        const m = new THREE.MeshLambertMaterial();
+        m.color.setHSL(.2, .5, .5);
         this.neighbours.forEach((_) => {
             const mid = new THREE.Vector3();
             mid.copy(this.position);
@@ -70,18 +61,14 @@ class Node {
                 mid,
                 _.position
             ]);
-            const points = curve.getPoints(10);
-            const g = new THREE.BufferGeometry().setFromPoints(points);
-            const l = new THREE.Line(g, m);
-            l.computeLineDistances();
-            container.add(l);
+            const g = new THREE.TubeGeometry(curve, 20, .15, 5, false);
+            const mesh = new THREE.Mesh(g, m);
+            container.add(mesh);
         });
     }
 }
 
 const nodes = Array.from({ length: n }, () => new Node());
-const sg = new THREE.SphereGeometry(.1, 16, 16);
-const smat = new THREE.MeshLambertMaterial();
 nodes.forEach((_) => {
     _.setNeighbours(nodes);
     _.drawConnections();
