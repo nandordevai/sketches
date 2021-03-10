@@ -3,6 +3,7 @@ const maxDistance = 8;
 const n = 150;
 const curveDisplacement = 3;
 const maxConnections = 3;
+let enabled = true;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -19,7 +20,7 @@ directionalLight.position.set(0, 3, 8);
 const fog = new THREE.Fog();
 fog.color.setHSL(0, 0, 0);
 fog.near = containerSize / 3;
-fog.far = containerSize * 2.25
+fog.far = containerSize * 2.25;
 
 const scene = new THREE.Scene();
 scene.add(directionalLight);
@@ -29,19 +30,19 @@ scene.add(container);
 scene.fog = fog;
 
 class Node {
-    constructor() {
+    constructor(i) {
+        this.index = i;
         this.position = new THREE.Vector3(
             (Math.random() - .5) * containerSize,
             (Math.random() - .5) * containerSize,
             (Math.random() - .5) * containerSize
         );
         this.neighbours = [];
+        this.connections = [];
     }
 
     setNeighbours(nodes) {
-        this.neighbours = nodes
-            .filter(this.isClose.bind(this))
-            .slice(0, maxConnections);
+        this.neighbours = nodes.filter(this.isClose.bind(this));
     }
 
     isClose(node) {
@@ -50,7 +51,8 @@ class Node {
     }
 
     drawConnections() {
-        this.neighbours.forEach((_) => {
+        for (const _ of this.neighbours) {
+            if (this.isConnectedTo(_)) continue;
             const mid = new THREE.Vector3();
             mid.copy(this.position);
             mid.lerp(_.position, .5);
@@ -65,10 +67,16 @@ class Node {
                 mid,
                 _.position
             ]);
-            const g = new THREE.TubeGeometry(curve, 20, .15, 5, true);
+            const g = new THREE.TubeGeometry(curve, 20, .15, 5, false);
             const mesh = new THREE.Mesh(g, material);
             container.add(mesh);
-        });
+            this.connections.push(_.index);
+        }
+    }
+
+    isConnectedTo(other) {
+        return ((this.connections.includes(other.index))
+            || (other.connections.includes(this.index)));
     }
 }
 
@@ -76,11 +84,10 @@ const material = new THREE.MeshLambertMaterial();
 const color = new THREE.Color();
 color.setHSL(.15, .8, .5);
 material.emissive = color;
-const nodes = Array.from({ length: n }, () => new Node());
+const nodes = Array.from({ length: n }, (_, i) => new Node(i));
 const g = new THREE.SphereGeometry(.3, 16, 16);
 nodes.forEach((_) => {
     _.setNeighbours(nodes);
-    // TODO: remove duplicate connections
     if (_.neighbours.length) {
         const mesh = new THREE.Mesh(g, material);
         mesh.position.copy(_.position);
@@ -92,7 +99,9 @@ nodes.forEach((_) => {
 function render(time) {
     container.rotateY(0.01);
     requestAnimationFrame(render);
-    renderer.render(scene, camera);
+    if (enabled) renderer.render(scene, camera);
 }
 
 requestAnimationFrame(render);
+
+document.body.addEventListener('click', () => { enabled = !enabled; });
