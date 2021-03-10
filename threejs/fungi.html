@@ -10,12 +10,20 @@
             margin: 0;
         }
     </style>
-    <script src="/threejs/three.js/build/three.min.js"></script>
     <script src="/lib.js"></script>
 </head>
 
 <body>
-    <script src="fungi.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+        </script>
+    
+    <script id="fragmentShader" type="x-shader/x-fragment">
+            uniform float time;
+    
+            void main()	{
+            }
+        </script>
+    <script src="fungi.js" type="module"></script>
 </body>
 
 </html>

@@ -1,7 +1,11 @@
+import * as THREE from './three.js/build/three.module.js';
+
+// TODO: find and connect disjunct sets of nodes
+
 const containerSize = 40;
-const maxDistance = 8;
-const n = 150;
-const curveDisplacement = 3;
+const maxDistance = 9;
+const n = 140;
+const curveDisplacement = 2;
 const maxConnections = 3;
 let enabled = true;
 
@@ -9,7 +13,8 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const aspect = window.innerWidth / window.innerHeight;
+const camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
 camera.position.z = containerSize + 10;
 camera.lookAt(0, 0, 0);
 
@@ -29,6 +34,16 @@ const container = new THREE.Object3D();
 scene.add(container);
 scene.fog = fog;
 
+const uniforms = {
+    time: { value: 1.0 }
+};
+
+const shaderMaterial = new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: document.getElementById('vertexShader').textContent,
+    fragmentShader: document.getElementById('fragmentShader').textContent
+});
+
 class Node {
     constructor(i) {
         this.index = i;
@@ -42,7 +57,9 @@ class Node {
     }
 
     setNeighbours(nodes) {
-        this.neighbours = nodes.filter(this.isClose.bind(this));
+        this.neighbours = nodes
+            .filter(this.isClose.bind(this))
+            .slice(0, maxConnections);
     }
 
     isClose(node) {
@@ -53,18 +70,28 @@ class Node {
     drawConnections() {
         for (const _ of this.neighbours) {
             if (this.isConnectedTo(_)) continue;
-            const mid = new THREE.Vector3();
-            mid.copy(this.position);
-            mid.lerp(_.position, .5);
-            const offset = new THREE.Vector3(
+            const mid1 = new THREE.Vector3();
+            mid1.copy(this.position);
+            mid1.lerp(_.position, .33);
+            const offset1 = new THREE.Vector3(
                 (Math.random() - .5) * curveDisplacement,
                 (Math.random() - .5) * curveDisplacement,
                 (Math.random() - .5) * curveDisplacement
             );
-            mid.add(offset);
+            mid1.add(offset1);
+            const mid2 = new THREE.Vector3();
+            mid2.copy(this.position);
+            mid2.lerp(_.position, .66);
+            const offset2 = new THREE.Vector3(
+                (Math.random() - .5) * curveDisplacement,
+                (Math.random() - .5) * curveDisplacement,
+                (Math.random() - .5) * curveDisplacement
+            );
+            mid2.add(offset2);
             const curve = new THREE.CatmullRomCurve3([
                 this.position,
-                mid,
+                mid1,
+                mid2,
                 _.position
             ]);
             const g = new THREE.TubeGeometry(curve, 20, .15, 5, false);
@@ -80,12 +107,13 @@ class Node {
     }
 }
 
-const material = new THREE.MeshLambertMaterial();
+const material = new THREE.MeshPhongMaterial();
 const color = new THREE.Color();
 color.setHSL(.15, .8, .5);
 material.emissive = color;
+material.shininess = 100;
 const nodes = Array.from({ length: n }, (_, i) => new Node(i));
-const g = new THREE.SphereGeometry(.3, 16, 16);
+const g = new THREE.SphereGeometry(.15, 16, 16);
 nodes.forEach((_) => {
     _.setNeighbours(nodes);
     if (_.neighbours.length) {
@@ -96,7 +124,7 @@ nodes.forEach((_) => {
     }
 });
 
-function render(time) {
+function render() {
     container.rotateY(0.01);
     requestAnimationFrame(render);
     if (enabled) renderer.render(scene, camera);
