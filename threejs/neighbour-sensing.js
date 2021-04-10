@@ -12,6 +12,9 @@ let enabled = true;
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.gammaFactor = 2.2;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.physicallyCorrectLights = true;
 document.body.appendChild(renderer.domElement);
 
 const aspect = window.innerWidth / window.innerHeight;
@@ -21,10 +24,12 @@ camera.lookAt(0, 0, 0);
 
 const directionalLight = new THREE.DirectionalLight();
 directionalLight.color.setHSL(0, 0, .3);
+directionalLight.color.convertSRGBToLinear();
 directionalLight.position.set(0, 3, 8);
 
 const fog = new THREE.Fog();
 fog.color.setHSL(0, 0, 0);
+fog.color.convertSRGBToLinear();
 fog.near = containerSize / 3;
 fog.far = containerSize * 2.25;
 
@@ -126,6 +131,7 @@ class Node {
 const material = new THREE.MeshPhongMaterial();
 const color = new THREE.Color();
 color.setHSL(.15, .8, .5);
+color.convertSRGBToLinear();
 material.emissive = color;
 material.shininess = 100;
 
