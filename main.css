@@ -2,8 +2,7 @@ body {
     display: flex;
     flex-direction: column;
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-    align-items: center;
-    margin: 3rem;
+    margin: 3rem 20rem;
 }
 
 main {
@@ -40,4 +39,8 @@ footer {
 
 h2 {
     font-size: 1.2rem;
+}
+
+time::before {
+    content: attr(datetime);
 }
