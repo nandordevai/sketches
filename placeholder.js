@@ -14,7 +14,6 @@ function draw() {
     fill(230);
     ellipse(0, 0, r, r, 50);
     pop();
-    // noFill();
     fill(255, 100);
     stroke(20);
     strokeWeight(2);
