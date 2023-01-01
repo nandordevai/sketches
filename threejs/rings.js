@@ -3,9 +3,9 @@ class Ring {
         this.hue = Math.random();
         this.node = new THREE.Object3D();
         this.node.rotation.z = Math.random();
-        this.rotationSpeed = random(-0.03, 0.03);
-        this.spin = random(-0.1, 0.1);
-        this.speed = 0.2;
+        this.rotationSpeed = random(-0.0001, 0.0001);
+        this.spin = random(-0.01, 0.01);
+        this.speed = 0.02;
         this.r = map(Math.random(), 0, 1, 1, 4);
         this.itemWidth = random(0.1, 0.4) * this.r * 2;
         this.material = new THREE.MeshLambertMaterial();
