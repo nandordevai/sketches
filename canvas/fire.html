@@ -1,0 +1,46 @@
+<!doctype html>
+<title>Particles</title>
+<style>
+    :root {
+        --fire-color: hsla(25, 100%, 45%, 1);
+    }
+    body {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        z-index: 0;
+    }
+
+    canvas {
+        filter: blur(10px) contrast(5);
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+    }
+
+    main {
+        align-items: center;
+        background: hsla(0, 0%, 0%, 1);
+        display: flex;
+        height: 100vh;
+        justify-content: space-evenly;
+        width: 100vw;
+    }
+
+    .box {
+        background: var(--fire-color);
+        border-radius: 15px;
+        box-shadow: 0 0 10px 7px var(--fire-color);
+        height: 100px;
+        width: 300px;
+        z-index: 2;
+    }
+</style>
+<body>
+<canvas></canvas>
+<main>
+    <div class="box"></div>
+</main>
+<script src="fire.js"></script>
+</body>
