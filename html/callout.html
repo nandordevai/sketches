@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D callout</title>
+    <style>
+        body {
+            align-items: center;
+            display: flex;
+            font-size: 16px;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        .callout {
+            background: hsla(47, 100%, 85%, 1);
+            font-family: 'Avenir Next', Helvetica, Arial, sans-serif;
+            font-size: 1.5rem;
+            height: fit-content;
+            line-height: 2;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .fold {
+            background: hsla(223, 76%, 52%, 1);
+            height: 100%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transform-origin: 100% 100%;
+            transform: skew(0, -30deg);
+            width: 8rem;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="callout">
+        “Stories of imagination tend to upset those without one.”<br>
+        ― Terry Pratchett
+        <div class="fold"></div>
+    </div>
+</body>
+</html>
