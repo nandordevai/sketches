@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radial gradient animation</title>
+
+    <style>
+        body {
+            display: flex;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 2rem;
+            height: 100dvh;
+            margin: 0;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button {
+            align-items: center;
+            background:
+                black
+                radial-gradient(circle, transparent 1%, black 1%)
+                center / 10000%;
+            background-position: center;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            height: 4rem;
+            justify-content: center;
+            transition: background 0.6s;
+            width: 10rem;
+        }
+
+        .button:active {
+            background-color: grey;
+            background-size: 100%;
+            transition: background 0s;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="button">Click</div>
+</body>
+
+</html>
